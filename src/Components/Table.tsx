@@ -8,37 +8,43 @@ import "./Table.css";
 
 const Table = () => {
   const [list, setList] = useState<IUser[]>([]);
-    const { openModal, closeModal, modalIsOpen } = useModal();
-    const [userUpdate, setUserUpdate] = useState<IUser>({
-      nombre:'',
-      apellido:'',
-      email:'',
-      id:0,
-    })
-    const [TYPE, setTYPE] = useState('')
-    const deleteClientAction=async(id=0)=>{
-      try {
-        await deleteClient(id)
-        AlertInfo('Se ha eliminado correctamente')
-      } catch (error) {
-        
-      } finally {
-        getClient()
-      }
-      
+  const { openModal, closeModal, modalIsOpen } = useModal();
+  const [userUpdate, setUserUpdate] = useState<IUser>({
+    nombre: "",
+    apellido: "",
+    email: "",
+    id: 0,
+  });
+  const [TYPE, setTYPE] = useState("");
+  const deleteClientAction = async (id = 0) => {
+    try {
+      await deleteClient(id);
+      AlertInfo("Se ha eliminado correctamente");
+    } catch (error) {
+    } finally {
+      getClient();
     }
-    useEffect(() => {
-      (async () => {
-        const { data } = await getClient();
-        setList(data);
-      })();
-    }, [list]);
+  };
+  useEffect(() => {
+    (async () => {
+      const { data } = await getClient();
+      setList(data);
+    })();
+  }, [list]);
   return (
     <div className={"container"}>
       <div style={{ flexDirection: "column" }}>
-      <Header/>
+        <Header />
         <div style={{ width: 200 }}>
-          <button className={"button-85"} onClick={()=>{setTYPE('add'); openModal()}}>Crear</button>
+          <button
+            className={"button-85"}
+            onClick={() => {
+              setTYPE("add");
+              openModal();
+            }}
+          >
+            Crear
+          </button>
         </div>
         <div>
           <table>
@@ -48,19 +54,34 @@ const Table = () => {
                 <th scope="col">Nombre</th>
                 <th scope="col">apellido</th>
                 <th scope="col">Email</th>
+                <th scope="col">Acciones</th>
               </tr>
             </thead>
             <tbody>
-              {list?.map(({ nombre, apellido, email,id }: IUser) => (
+              {list?.map(({ nombre, apellido, email, id }: IUser) => (
                 <tr key={id}>
                   <td data-label="Nombre">{nombre}</td>
                   <td data-label="apellido">{apellido}</td>
                   <td data-label="Email">{email}</td>
-                  <td data-label="Update">
-                    <button className={"button-85"} style={{ width: 140 }} onClick={()=>{setTYPE('update');setUserUpdate({...{nombre, apellido, email, id}}) ;openModal()}}>
+                  <td>
+                    <button
+                      className={"button-85"}
+                      style={{ width: 120, marginRight: 5 }}
+                      onClick={() => {
+                        setTYPE("update");
+                        setUserUpdate({ ...{ nombre, apellido, email, id } });
+                        openModal();
+                      }}
+                    >
                       Actulizar
                     </button>
-                    <button className={"button-85"} style={{ width: 140 }} onClick={()=>{deleteClientAction(id)}}>
+                    <button
+                      className={"button-85"}
+                      style={{ width: 120 }}
+                      onClick={() => {
+                        deleteClientAction(id);
+                      }}
+                    >
                       Eliminar
                     </button>
                   </td>
@@ -70,7 +91,7 @@ const Table = () => {
           </table>
         </div>
       </div>
-      <Modal {...{openModal,closeModal,modalIsOpen,TYPE,userUpdate}}/>
+      <Modal {...{ openModal, closeModal, modalIsOpen, TYPE, userUpdate }} />
     </div>
   );
 };
