@@ -36,3 +36,9 @@
     transform: rotate(360deg);
   }
 }
+
+/* general styling */
+body {
+  font-family: "Open Sans", sans-serif;
+  line-height: 1.25;
+}
